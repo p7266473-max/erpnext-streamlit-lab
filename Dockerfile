@@ -5,7 +5,7 @@ FROM frappe/erpnext:v15.0.0
 WORKDIR /home/frappe/frappe-bench
 
 # Expose ERPNext web service port
-EXPOSE 8000
+# EXPOSE 8000
 
 # Start command
 CMD ["bench", "start"]
