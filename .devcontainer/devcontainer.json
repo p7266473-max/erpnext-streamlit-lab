@@ -1,0 +1,33 @@
+{
+  "name": "ERPNext Streamlit Lab Sandbox",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "erpnext-web",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "enableNonRootDocker": true
+    }
+  },
+  "forwardPorts": [
+    8000,
+    8501
+  ],
+  "portsAttributes": {
+    "8000": {
+      "label": "ERPNext Web",
+      "onAutoForward": "notify"
+    },
+    "8501": {
+      "label": "Streamlit Control Portal",
+      "onAutoForward": "openPreview"
+    }
+  }
+}
