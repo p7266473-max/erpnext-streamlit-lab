@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_USER=frappe
+      - MYSQL_PASSWORD=frappe
+      - MYSQL_DATABASE=frappe
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  redis-cache:
+    image: redis:6.2-alpine
+
+  redis-queue:
+    image: redis:6.2-alpine
+
+  redis-socketio:
+    image: redis:6.2-alpine
+
+  erpnext-web:
+    image: frappe/erpnext:v15.0.0
+    environment:
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - REDIS_CACHE=redis-cache:6379
+      - REDIS_QUEUE=redis-queue:6379
+      - REDIS_SOCKETIO=redis-socketio:6379
+      - SITE_NAME=site1.localhost
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mariadb
+      - redis-cache
+      - redis-queue
+      - redis-socketio
+
+volumes:
+  mariadb-data:
