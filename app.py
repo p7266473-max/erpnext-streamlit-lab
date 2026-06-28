@@ -23,17 +23,21 @@ else:
 if st.session_state["gemini_api_key"]:
     st.sidebar.success("✅ Access Granted (API Key Loaded!)")
     
-    # Retrieve Codespace details to build dynamic public web address if applicable
+    # Retrieve environment variables for Render backend, falling back to Codespaces, then localhost
+    render_backend = os.environ.get("ERP_BACKEND_URL", "")
     codespace_name = os.environ.get("CODESPACE_NAME", "")
     codespace_domain = os.environ.get("GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN", "")
     
-    if codespace_name and codespace_domain:
+    if render_backend:
+        default_address = render_backend
+    elif codespace_name and codespace_domain:
         # Construct GitHub Codespaces public forwarded URL for Port 8000 (ERPNext)
         default_address = f"https://{codespace_name}-8000.{codespace_domain}"
     else:
         default_address = "http://localhost:8000"
         
     target_url = st.text_input("ERPNext Server Address", value=default_address)
+
 
     
     st.write(f"Connecting to ERPNext service at: `{target_url}`")
